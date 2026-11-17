@@ -2,7 +2,7 @@
 
 A small KernelSU module that disables **Touch to Search** in Brave Browser by setting:
 
-```json
+```
 "contextual_search_enabled":"false"
 ```
 
@@ -25,6 +25,35 @@ Automatic boot-time execution requires KernelSU to be active during startup. If 
 
 In that case, activate KernelSU with your usual method after reboot, open this module in KernelSU Manager, and use its **Action** button to apply the change manually.
 
+### Permanent fix for temporary root users
+
+If you only have temporary root (or a Samsung device), you can apply the change by hand from a terminal app such as Termux (get it from F-Droid). Once the preference is set to `false`, it stays that way, so you do not need the module on every boot.
+
+1. Open Termux and get a root shell:
+
+```
+su
+```
+
+2. Check the current value:
+
+```
+grep -o '"contextual_search_enabled":"[^"]*"' /data/data/com.brave.browser/app_chrome/Default/Preferences
+```
+
+3. Force-stop Brave, then disable the feature:
+
+```
+am force-stop com.brave.browser
+sed -i 's/"contextual_search_enabled":"true"/"contextual_search_enabled":"false"/g' /data/data/com.brave.browser/app_chrome/Default/Preferences
+```
+
+4. Run the check from step 2 again. The expected result is:
+
+```
+"contextual_search_enabled":"false"
+```
+
 ## What it does
 
 - Force-stops Brave before editing its preferences.
@@ -41,7 +70,7 @@ Disable or uninstall the module in KernelSU Manager. This stops future automatic
 
 To restore the backup, force-stop Brave and copy the backup over the Preferences file. Then restore the file's original owner and permissions:
 
-```sh
+```
 su
 am force-stop com.brave.browser
 cp /sdcard/Preferences.bak /data/data/com.brave.browser/app_chrome/Default/Preferences
@@ -55,4 +84,4 @@ Use the UID/GID and permissions appropriate for your device; do not copy the exa
 
 The GitHub Actions workflow creates a flashable ZIP when a `v*` tag is pushed. You can also run the workflow manually to download the ZIP as an Actions artifact.
 
-KernelSU module documentation: https://kernelsu.org/guide/module.html
+KernelSU module documentation: [https://kernelsu.org/guide/module.html](https://kernelsu.org/guide/module.html)
