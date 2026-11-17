@@ -2,6 +2,7 @@
 
 PACKAGE="com.brave.browser"
 PREF="/data/data/$PACKAGE/app_chrome/Default/Preferences"
+BACKUP="/sdcard/Preferences.bak"
 
 if [ ! -f "$PREF" ]; then
     echo "Brave Preferences file not found. Open Brave once and try again."
@@ -23,8 +24,11 @@ am force-stop "$PACKAGE" >/dev/null 2>&1
 OWNER="$(stat -c '%u:%g' "$PREF" 2>/dev/null)"
 MODE="$(stat -c '%a' "$PREF" 2>/dev/null)"
 
-if [ ! -f /sdcard/Preferences.bak ]; then
-    cp "$PREF" /sdcard/Preferences.bak 2>/dev/null
+if [ ! -f "$BACKUP" ]; then
+    cp "$PREF" "$BACKUP" || {
+        echo "Could not create the Preferences backup. No changes made."
+        exit 1
+    }
 fi
 
 sed -i 's/"contextual_search_enabled":"true"/"contextual_search_enabled":"false"/g' "$PREF" || exit 1
