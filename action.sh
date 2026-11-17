@@ -1,4 +1,4 @@
 #!/system/bin/sh
 
 MODDIR=${0%/*}
-exec "$MODDIR/apply.sh"
+exec sh "$MODDIR/apply.sh"
