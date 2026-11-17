@@ -29,7 +29,7 @@ In that case, activate KernelSU with your usual method after reboot, open this m
 
 - Force-stops Brave before editing its preferences.
 - Changes every exact occurrence of `"contextual_search_enabled":"true"` to `false`.
-- Creates `/sdcard/Preferences.bak` before the first change, if that backup does not already exist.
+- Creates `/sdcard/Preferences.bak` before the first change, if that backup does not already exist. If the backup cannot be created, it aborts without changing the setting.
 - Preserves the Preferences file's owner, group and permissions.
 - Does not modify the Brave APK or Android system files.
 
