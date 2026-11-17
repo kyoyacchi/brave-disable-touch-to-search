@@ -2,6 +2,8 @@ name: Build module
 
 on:
   push:
+    branches:
+      - master
     tags:
       - "v*"
   workflow_dispatch:
