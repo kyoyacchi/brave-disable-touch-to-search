@@ -11,4 +11,4 @@ while [ ! -f "$PREF" ] && [ "$COUNT" -lt 180 ]; do
 done
 
 [ -f "$PREF" ] || exit 0
-"$MODDIR/apply.sh" >/dev/null 2>&1
+sh "$MODDIR/apply.sh" >/dev/null 2>&1
