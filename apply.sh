@@ -9,6 +9,8 @@ if [ ! -f "$PREF" ]; then
     exit 1
 fi
 
+am force-stop "$PACKAGE" >/dev/null 2>&1
+
 if grep -q '"contextual_search_enabled":"false"' "$PREF"; then
     echo "Touch to Search is already disabled."
     exit 0
@@ -18,8 +20,6 @@ if ! grep -q '"contextual_search_enabled":"true"' "$PREF"; then
     echo "The expected preference was not found. No changes made."
     exit 1
 fi
-
-am force-stop "$PACKAGE" >/dev/null 2>&1
 
 OWNER="$(stat -c '%u:%g' "$PREF" 2>/dev/null)"
 MODE="$(stat -c '%a' "$PREF" 2>/dev/null)"
